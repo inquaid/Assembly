@@ -1,0 +1,298 @@
+% LaTeX Code for 8086 Assembly Language Basics
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\title{8086 Assembly Language Basics}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Registers Overview}
+
+\subsection*{General Purpose Registers:}
+\begin{itemize}
+    \item \textbf{AX (Accumulator Register):}
+    \begin{itemize}
+        \item Primary register for arithmetic, logic, and data transfer operations.
+        \item Divided into \textbf{AH} (High byte) and \textbf{AL} (Low byte).
+    \end{itemize}
+
+    \item \textbf{BX (Base Register):}
+    \begin{itemize}
+        \item Used to hold memory addresses for addressing data.
+        \item Divided into \textbf{BH} (High byte) and \textbf{BL} (Low byte).
+    \end{itemize}
+
+    \item \textbf{CX (Count Register):}
+    \begin{itemize}
+        \item Primarily used as a loop counter.
+        \item Divided into \textbf{CH} (High byte) and \textbf{CL} (Low byte).
+    \end{itemize}
+
+    \item \textbf{DX (Data Register):}
+    \begin{itemize}
+        \item Used for I/O operations and extended arithmetic operations.
+        \item Divided into \textbf{DH} (High byte) and \textbf{DL} (Low byte).
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Pointer and Index Registers:}
+\begin{itemize}
+    \item \textbf{SI (Source Index):} Used for source addressing in string operations.
+    \item \textbf{DI (Destination Index):} Used for destination addressing in string operations.
+    \item \textbf{BP (Base Pointer):} Points to data on the stack.
+    \item \textbf{SP (Stack Pointer):} Points to the top of the stack.
+\end{itemize}
+
+\section*{Important Concepts}
+
+\subsection*{DB}
+\begin{itemize}
+    \item \textbf{Define Byte:} A directive to allocate memory and initialize it with byte-sized data.
+\end{itemize}
+\begin{verbatim}
+msg DB "Hello, 8086!", 0Dh, 0Ah, "$"
+num DB 100
+\end{verbatim}
+- \texttt{msg} stores a string ending with \texttt{\$} (used by DOS interrupts).
+- \texttt{num} allocates a single byte initialized to 100.
+
+\subsection*{Labels}
+\begin{itemize}
+    \item A marker in the code that acts like a bookmark for loops or jumps.
+\end{itemize}
+\begin{verbatim}
+print_loop:
+    ; Code here
+\end{verbatim}
+
+\subsection*{MOV Instruction}
+\begin{itemize}
+    \item Transfers data between registers or between memory and registers.
+\end{itemize}
+\begin{verbatim}
+MOV AX, BX  ; Copy the value of BX into AX
+MOV AL, 5   ; Load 5 into AL (lower byte of AX)
+\end{verbatim}
+
+\section*{Code Example}
+
+\subsection*{Complete Program:}
+\begin{verbatim}
+.model small
+.stack 100h
+.data
+    msg DB "Hello, 8086!", 0Dh, 0Ah, "$"   ; Message to print
+.code
+main proc
+    ; AX: Arithmetic example
+    MOV AX, 5         ; Load 5 into AX
+    ADD AX, 10        ; Add 10 to AX (AX = 15)
+
+    ; BX: Addressing example
+    MOV BX, OFFSET msg  ; Load address of 'msg' into BX
+
+    ; CX: Loop counter
+    MOV CX, 5         ; Set loop counter to 5
+print_loop:
+    MOV AH, 2         ; Function to print a character
+    MOV DL, '*'       ; Load '*' into DL
+    INT 21h           ; Print the character
+    LOOP print_loop   ; Decrement CX and jump if CX > 0
+
+    ; DX: I/O operation
+    MOV AH, 9         ; Function to print a string
+    MOV DX, BX        ; Load address of 'msg' into DX
+    INT 21h           ; Print the string
+
+    HLT               ; Halt execution
+main endp
+end main
+\end{verbatim}
+
+\subsection*{Code Explanation:}
+\begin{enumerate}
+    \item \textbf{.model small:} Specifies the memory model (small = single code and data segment).
+    \item \textbf{.stack 100h:} Reserves 256 bytes (100h) for the stack.
+    \item \textbf{.data:} Segment for declaring variables and data.
+    \item \textbf{msg DB \"Hello, 8086!\", 0Dh, 0Ah, \"\$\":} Defines a string ending with \texttt{\$}, used by \texttt{INT 21h} to print strings.
+    \item \textbf{MOV AX, 5:} Loads the value 5 into the AX register.
+    \item \textbf{ADD AX, 10:} Adds 10 to the value in AX (AX becomes 15).
+    \item \textbf{MOV BX, OFFSET msg:} Stores the memory address of \texttt{msg} into the BX register.
+    \item \textbf{MOV CX, 5:} Initializes the loop counter to 5.
+    \item \textbf{print\_loop:} Label marking the start of the loop.
+    \item \textbf{MOV AH, 2:} Prepares for a single-character print operation.
+    \item \textbf{MOV DL, '*':} Loads the ASCII value of \texttt{*} into DL.
+    \item \textbf{INT 21h:} DOS interrupt for performing I/O operations.
+    \item \textbf{LOOP print\_loop\:} Decrements CX and jumps to \texttt{print\_loop} if CX > 0.
+    \item \textbf{MOV AH, 9:} Prepares for a string print operation.
+    \item \textbf{MOV DX, BX:} Loads the address of \texttt{msg} (stored in BX) into DX.
+    \item \textbf{HLT:} Halts the program.
+\end{enumerate}
+
+\section*{Quick Revision (Bullet Notes)}
+\begin{itemize}
+    \item \textbf{AX:} Arithmetic and data transfer.
+    \item \textbf{BX:} Memory addressing.
+    \item \textbf{CX:} Loop counter.
+    \item \textbf{DX:} I/O operations.
+    \item \textbf{DB:} Define byte-sized variables or strings.
+    \item \textbf{Labels:} Used for loops or jumps.
+    \item \textbf{MOV Instruction:} Transfers data between registers/memory.
+    \item \textbf{INT 21h:} DOS interrupt for I/O.
+    \begin{itemize}
+        \item AH = 2: Print a single character (character in DL).
+        \item AH = 9: Print a string (address in DX).
+    \end{itemize}
+    \item \textbf{HLT:} Stops execution.
+\end{itemize}
+\newpage
+\section*{Topics Covered}
+
+Today, we explored more advanced concepts in assembly language programming, focusing on conditional branching, printing values, and structured control flow. Below is a detailed summary of the key topics:
+
+\section{Conditional Branching}
+\begin{itemize}
+    \item In assembly, conditional branching is handled using instructions like \texttt{CMP} (compare) and conditional jumps such as:
+    \begin{itemize}
+        \item \texttt{JE} (Jump if Equal)
+        \item \texttt{JG} (Jump if Greater)
+        \item \texttt{JL} (Jump if Less)
+        \item \texttt{JNE} (Jump if Not Equal)
+    \end{itemize}
+    \item Example of a simple conditional branch:
+    \begin{verbatim}
+    CMP AX, BX
+    JG GREATER
+    ; Code for else block
+    JMP END_IF
+    GREATER:
+    ; Code for greater block
+    END_IF:
+    \end{verbatim}
+\end{itemize}
+
+\section{Printing Values}
+\begin{itemize}
+    \item To print data, we use the \texttt{INT 21H} interrupt with specific function codes:
+    \begin{itemize}
+        \item \texttt{AH = 09H} to display a string. The string must be terminated by a \texttt{\$} symbol.
+        \item \texttt{AH = 02H} to display a single character (with the character stored in \texttt{DL}).
+    \end{itemize}
+    \item Example of printing a string:
+    \begin{verbatim}
+    LEA DX, STRING
+    MOV AH, 09H
+    INT 21H
+    \end{verbatim}
+    \item Example of printing a single character:
+    \begin{verbatim}
+    MOV DL, 'A'
+    MOV AH, 02H
+    INT 21H
+    \end{verbatim}
+\end{itemize}
+
+\section{Structured Control Flow}
+\begin{itemize}
+    \item Assembly does not have built-in blocks for conditional or nested control flow.
+    \item Explicit labels and jumps are used to define the structure of conditions and loops.
+    \item Example of a nested condition:
+    \begin{verbatim}
+    CMP AX, BX
+    JG GREATER
+    CMP CX, DX
+    JE EQUAL
+    ; Else-Else block
+    JMP END_NESTED
+    EQUAL:
+    ; Else-If block
+    JMP END_NESTED
+    GREATER:
+    ; If block
+    END_NESTED:
+    ; Code continues
+    \end{verbatim}
+\end{itemize}
+
+\section{LEA Instruction}
+\begin{itemize}
+    \item \texttt{LEA} (Load Effective Address) is used to load the address of a variable into a register, typically \texttt{DX}.
+    \item Example:
+    \begin{verbatim}
+    LEA DX, STRING
+    \end{verbatim}
+    This moves the address of \texttt{STRING} into the \texttt{DX} register.
+\end{itemize}
+
+\section{Complete Example: Nested Conditions}
+\begin{verbatim}
+.MODEL SMALL
+.STACK 100H
+
+.DATA
+    NUM1 DW 7
+    NUM2 DW 5
+    NUM3 DW 9
+    NUM1_MSG DB 'NUM1 is the greatest$', 0
+    NUM2_MSG DB 'NUM2 is the greatest$', 0
+    NUM3_MSG DB 'NUM3 is the greatest$', 0
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+
+    ; Compare NUM1 and NUM2
+    MOV AX, NUM1
+    CMP AX, NUM2
+    JG CHECK_NUM3           ; If NUM1 > NUM2, check against NUM3
+
+    ; Else, compare NUM2 and NUM3
+    MOV AX, NUM2
+    CMP AX, NUM3
+    JG NUM2_IS_GREATEST     ; If NUM2 > NUM3, NUM2 is greatest
+
+    ; Else, NUM3 is greatest
+    MOV AH, 09H
+    LEA DX, NUM3_MSG
+    INT 21H
+    JMP END_PROGRAM
+
+NUM2_IS_GREATEST:
+    ; Code for NUM2 > NUM3
+    MOV AH, 09H
+    LEA DX, NUM2_MSG
+    INT 21H
+    JMP END_PROGRAM
+
+CHECK_NUM3:
+    ; Compare NUM1 and NUM3
+    CMP AX, NUM3
+    JG NUM1_IS_GREATEST     ; If NUM1 > NUM3, NUM1 is greatest
+
+    ; Else, NUM3 is greatest
+    MOV AH, 09H
+    LEA DX, NUM3_MSG
+    INT 21H
+    JMP END_PROGRAM
+
+NUM1_IS_GREATEST:
+    ; Code for NUM1 > NUM2 and NUM3
+    MOV AH, 09H
+    LEA DX, NUM1_MSG
+    INT 21H
+
+END_PROGRAM:
+    MOV AX, 4C00H
+    INT 21H
+MAIN ENDP
+END MAIN
+\end{verbatim}
+
+\end{document}
