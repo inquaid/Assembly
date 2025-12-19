@@ -1,0 +1,15 @@
+# Assembler debug file for MCU 8051 IDE v1.4.9
+# Used assembler: MCU 8051 IDE
+# Date: 11/06/2025
+327D9BD535514263E25E7AF01F2A0419 "packed_bcd_to_ascii.asm" 
+0 2 0 116 41
+0 3 2 248
+0 5 3 84 15
+0 6 5 36 48
+0 7 7 250
+0 9 8 232
+0 10 9 84 240
+0 11 11 196
+0 12 12 36 48
+0 13 14 254
+0 16 15 128 254

@@ -1,0 +1,11 @@
+# Assembler debug file for MCU 8051 IDE v1.4.9
+# Used assembler: MCU 8051 IDE
+# Date: 11/06/2025
+D108DCC93634F35B4FFD44BFA8744E76 "bit_op.asm" 
+0 3 0 116 202
+0 4 2 117 240 240
+0 5 5 85 240
+0 6 7 69 240
+0 7 9 100 255
+0 8 11 196
+0 11 12 128 254

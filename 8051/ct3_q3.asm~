@@ -1,0 +1,20 @@
+org 0000h
+	mov a, #0ffh
+	mov p1, a
+	mov p3, a
+
+	mov a, p1
+	mov r0, a
+	mov a, p3
+	mov r1, a
+
+back:
+	mov p2, r0
+	inc r0
+	inc r0
+	mov a, r0
+	mov b, r3
+	cjne a, b, back
+
+	sjmp $
+	end 

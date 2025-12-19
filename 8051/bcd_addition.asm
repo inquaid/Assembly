@@ -1,0 +1,19 @@
+org 0000h
+	mov r7, #34h
+	mov r6, #44h
+
+	mov a, r6
+	add a, r7
+	da a
+
+	mov r0, a
+	anl a, #0fh
+	mov r6, a
+
+	mov a, r0
+	swap a
+	anl a, #0fh
+	mov r7,a 
+
+	sjmp $
+	end 

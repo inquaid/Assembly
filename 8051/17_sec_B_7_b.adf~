@@ -1,0 +1,9 @@
+# Assembler debug file for MCU 8051 IDE v1.4.9
+# Used assembler: MCU 8051 IDE
+# Date: 11/07/2025
+9E86B6E851F84F9C7090460404088153 "17_sec_B_7_b.asm" 
+0 2 0 116 123
+0 3 2 117 240 10
+0 5 5 132
+0 7 6 170 240
+0 10 8 128 254
